@@ -1,0 +1,39 @@
+
+services:
+  # Service Python Publisher
+  python-node:
+    build:
+      context: ./python_node
+      dockerfile: Dockerfile
+    container_name: ros2_python_node
+    environment:
+      - ROS_DOMAIN_ID=42
+      - RMW_IMPLEMENTATION=rmw_cyclonedx_cpp
+    networks:
+      - ros2_network
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+
+  # Service C++ Subscriber  
+  cpp-node:
+    build:
+      context: ./cpp_node
+      dockerfile: Dockerfile
+    container_name: ros2_cpp_node
+    environment:
+      - ROS_DOMAIN_ID=42
+      - RMW_IMPLEMENTATION=rmw_cyclonedx_cpp
+    networks:
+      - ros2_network
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+
+# Configuration du réseau personnalisé
+networks:
+  ros2_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
